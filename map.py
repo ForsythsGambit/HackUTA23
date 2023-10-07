@@ -16,7 +16,7 @@ ArlMapDict={
     'color' : [grey,grey,grey,grey,grey,grey,grey]
 }
 ArlMapDF=pd.DataFrame(ArlMapDict)
-option = st.selectbox("Which building?",('Library','Pickard','Fine Arts Bridge','University Center','Planetarium','Engineering Research Building','College Park'),index=None)
+option = st.selectbox("Which building?",('Library','Pickard','Fine Arts Bridge','University Center','Planetarium','Engineering Research Building','College Park'))
 
 ChoiceIndex=ArlMapDict['buildings'].index(option)
 
