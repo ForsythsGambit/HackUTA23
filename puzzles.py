@@ -104,4 +104,4 @@ st.markdown(
     unsafe_allow_html=True,
 )"""
 
-print(numSub("Walter"))
+#print(numSub("Walter"))
