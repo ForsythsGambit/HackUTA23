@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -5,6 +6,7 @@ import selection
 import time
 import random
 import puzzles
+
 
 """Displays the locations on a map and allow the player to switch which building is selected."""
 #https://discuss.streamlit.io/t/map-plotting-using-streamlit-map/
@@ -15,7 +17,7 @@ grey="#808080" #grey
 selected ="#FF0000" #red
 @st.cache_data
 def start_game(inp=None):
-	chosenWeapon = []
+
 	chosenPeople = []
 	chosenLocation = []
 	x = 0
@@ -75,22 +77,23 @@ def start_game(inp=None):
 	print(killer)
 	shuffledPeople=chosenPeople.copy()
 	random.shuffle(shuffledPeople)
-	return chosenPeople, chosenLocation, chosenX, chosenY, lat, long,x,ArlingtonMapDictionary,ArlingtonMapDataFrame,selected,killer,murder_location,shuffledPeople
+	return chosenPeople, chosenLocation, chosenX, chosenY, lat, long,x,ArlingtonMapDictionary,ArlingtonMapDataFrame,df,selected,killer,murder_location,shuffledPeople,edited_df
+
 
 
 
 #checks to see if answer is rightr
-def checkAnswer(person, location):
-	if person == killer and location == murder_location:
-		st.write("YOU WIN")
+def checkAnswer(person):
+	if killer == person:
+		return 1
 	else:
-		st.write("you need to sleep")
+		print("not")
+		return 0
 
 #Create a Restart game func
 def restart():
-	x+=1
-	start_game(x)
-chosenPeople, chosenLocation, chosenX, chosenY, lat, long,x,ArlingtonMapDictionary,ArlingtonMapDataFrame,selected,	killer,murder_location,shuffledPeople = start_game(x)
+	start_game()
+chosenPeople, chosenLocation, chosenX, chosenY, lat, long,x,ArlingtonMapDictionary,ArlingtonMapDataFrame,df,selected,killer,murder_location,shuffledPeople,edited_df = start_game(x)
 #print(shuffledPeople)
 
 @st.cache_data
@@ -138,12 +141,17 @@ st.map(ArlingtonMapDataFrame, latitude='lat', longitude='lon', color='color',siz
 #    ArlingtonMapDataFrame['color'][ArlingtonMapDataFrame.index[ChoiceIndex]]="#FF0000"
 
 
-
 people = st.selectbox("Which Person?",(chosenPeople))
+
+
 #weapon = st.selectbox("Which Weapon?",(chosenWeapon))
 
 #starts to check answers
-if st.button ("Submit Answer"):
-	checkAnswer(killer, murder_location)
-if st.button("Restart"):
-	restart()
+if st.button ("Submit Answer","on_click"):
+	if checkAnswer(people):
+		st.write("You Win 🎉")
+	
+			
+if st.button ("Restart")  :
+	st.cache_data.clear()
+	st.cache_data.clear()
