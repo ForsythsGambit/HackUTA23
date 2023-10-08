@@ -11,6 +11,8 @@ import puzzles
 
 x=0
 
+grey="#808080" #grey
+selected ="#FF0000" #red
 @st.cache_data
 def start_game(inp=None):
 	chosenWeapon = []
@@ -32,7 +34,7 @@ def start_game(inp=None):
 		chosenX[i] = thing.chooseyVal(i)
 		chosenY[i] = thing.chooseyVal(i)
 	
-    
+	
 
 	
 	df = pd.DataFrame([
@@ -94,9 +96,9 @@ chosenPeople, chosenLocation, chosenX, chosenY, lat, long,x,ArlingtonMapDictiona
 @st.cache_data
 def getClue(index):
 	""""Take an index (of the chosenLocation) then use puzzles.py to generate a clue for a suspect"""
-	print("getting clue from indice of "+str(index))
+	#print("getting clue from indice of "+str(index))
 	if shuffledPeople[index]==killer:
-		print("indice is "+str(index)+" which is "+shuffledPeople[index])
+		#print("indice is "+str(index)+" which is "+shuffledPeople[index])
 		while True:
 			r=random.randint(0,5)
 			if r != index:
@@ -126,7 +128,11 @@ location = st.selectbox("Investigate which building?",(chosenLocation),index=Non
 if location != None:
 	ChoiceIndex=ArlingtonMapDictionary['buildings'].index(location)
 	st.write("Decode the clue to eliminate a suspect: "+str(getClue(ChoiceIndex)))
-
+	for indice in range(0,len(ArlingtonMapDataFrame["color"])):
+		if ArlingtonMapDataFrame["color"][indice]==selected and ChoiceIndex != indice:
+			ArlingtonMapDataFrame["color"][indice]=grey
+		if ArlingtonMapDataFrame["color"][indice]==grey and ChoiceIndex == indice:
+			ArlingtonMapDataFrame["color"][indice]=selected
 st.map(ArlingtonMapDataFrame, latitude='lat', longitude='lon', color='color',size=5)
 #if selected in ArlingtonMapDataFrame['color']:
 #    ArlingtonMapDataFrame['color'][ArlingtonMapDataFrame.index[ChoiceIndex]]="#FF0000"
